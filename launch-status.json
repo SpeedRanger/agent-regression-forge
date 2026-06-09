@@ -1,8 +1,21 @@
 {
   "product": "Agent Regression Forge",
-  "status_date": "2026-06-08",
+  "status_date": "2026-06-09",
   "public_url": "https://speedranger.github.io/agent-regression-forge/",
   "repo_url": "https://github.com/SpeedRanger/agent-regression-forge",
+  "release_url": "https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.1.0",
+  "repo_topics": [
+    "ai-agents",
+    "ai-code-review",
+    "claude-code",
+    "codex",
+    "coding-agents",
+    "developer-tools",
+    "product-hunt",
+    "qa",
+    "regression-testing",
+    "software-testing"
+  ],
   "positioning": "Turns failed AI coding-agent runs into deterministic regression packs.",
   "offer": {
     "name": "public/redacted failure-to-regression-pack service",
@@ -33,13 +46,14 @@
     "ph-gallery-2-pack.png"
   ],
   "completion_gates": {
-    "public_repo_created": false,
-    "public_site_current": false,
+    "public_repo_created": true,
+    "public_site_current": true,
     "product_hunt_listing_url": false,
     "product_hunt_rank_proof": false,
     "verified_revenue_over_10_usd": false
   },
   "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
+  "public_launch_issue_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1",
   "no_claims_until_proven": [
     "Product Hunt listing",
     "Product Hunt leaderboard rank",
