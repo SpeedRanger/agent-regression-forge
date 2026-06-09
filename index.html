@@ -52,8 +52,27 @@
     .sub { margin: 12px 0 0; color: var(--muted); font-size: 17px; max-width: 780px; }
     .offer { border: 2px solid var(--ink); background: #e4dcc7; padding: 14px; font-size: 14px; }
     .offer strong { display: block; font-size: 18px; margin-bottom: 4px; }
+    .slotline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 12px 0; }
+    .slotline span { border: 1px solid var(--ink); background: #fff8df; min-height: 14px; }
+    .slotline span:first-child { background: var(--hot); }
     .links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
     .links a { color: var(--ink); font-weight: 850; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+    .links a.primary-link {
+      background: var(--ink);
+      color: #fff9e8;
+      text-decoration: none;
+      padding: 8px 10px;
+      border: 2px solid var(--ink);
+    }
+    .meta-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+      margin: 0 0 16px;
+    }
+    .metric { border: 1px solid var(--line); background: #fff8df; padding: 10px; }
+    .metric b { display: block; font-size: 22px; line-height: 1; }
+    .metric span { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
     .workspace { display: grid; grid-template-columns: minmax(420px, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: start; }
     .panel { background: var(--panel); border: 1px solid var(--line); padding: 16px; box-shadow: 5px 5px 0 rgba(28,27,23,.12); }
     label { display: block; margin: 11px 0 6px; font-weight: 850; }
@@ -101,7 +120,7 @@
     pre { margin: 0; white-space: pre-wrap; background: var(--code); color: var(--code-ink); padding: 12px; overflow: auto; }
     .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 940px) {
-      header, .workspace, .row, .scoreline, .output-grid { grid-template-columns: 1fr; }
+      header, .workspace, .row, .scoreline, .output-grid, .meta-strip { grid-template-columns: 1fr; }
       textarea { min-height: 150px; }
     }
   </style>
@@ -116,13 +135,23 @@
       <aside class="offer">
         <strong>$19 service wedge</strong>
         One public/redacted failure to a regression pack. No private repos, secrets, customer data, or payment details in the public input.
+        <div class="slotline" aria-label="Five launch-sprint slots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        Launch sprint: five slots. One paid slot clears the $10 target only with payment evidence.
         <div class="links">
           <a href="launch-day-buyer-packet.md">Buyer packet</a>
           <a href="reserve-slot.md">Reserve slot</a>
-          <a href="https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml">Request pack</a>
+          <a class="primary-link" href="https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml">Request pack</a>
         </div>
       </aside>
     </header>
+
+    <section class="meta-strip" aria-label="Launch status">
+      <div class="metric"><b>5</b><span>launch-sprint packs</span></div>
+      <div class="metric"><b>$19</b><span>public/redacted failure review</span></div>
+      <div class="metric"><b>24h</b><span>target delivery after proof</span></div>
+    </section>
 
     <section class="workspace">
       <div class="panel">
@@ -148,6 +177,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         <button id="forge">Forge regression pack</button>
         <button id="sample" class="secondary">Load sample</button>
         <button id="copy" class="secondary">Copy Markdown</button>
+        <button id="card" class="secondary">Download card</button>
       </div>
 
       <div class="panel" aria-live="polite">
@@ -174,6 +204,29 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
 
     function lines(items) {
       return items.map(item => `<li>${item}</li>`).join("");
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 6) {
+      const words = text.split(/\s+/).filter(Boolean);
+      let line = "";
+      let linesDrawn = 0;
+      for (let i = 0; i < words.length; i += 1) {
+        const testLine = line ? `${line} ${words[i]}` : words[i];
+        if (ctx.measureText(testLine).width > maxWidth && line) {
+          ctx.fillText(line, x, y);
+          y += lineHeight;
+          linesDrawn += 1;
+          line = words[i];
+          if (linesDrawn >= maxLines - 1) {
+            break;
+          }
+        } else {
+          line = testLine;
+        }
+      }
+      if (line && linesDrawn < maxLines) {
+        ctx.fillText(line, x, y);
+      }
     }
 
     function forge() {
@@ -223,6 +276,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         "```"
       ].join("\n");
       window.currentMarkdown = markdown;
+      window.currentCard = { risk, stack, goal, error, modeList };
       const riskNode = document.getElementById("risk");
       riskNode.textContent = risk;
       riskNode.className = `score ${risk < 62 ? "low" : ""}`;
@@ -245,6 +299,42 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       forge();
     });
     document.getElementById("copy").addEventListener("click", () => navigator.clipboard.writeText(window.currentMarkdown || ""));
+    document.getElementById("card").addEventListener("click", () => {
+      const card = window.currentCard;
+      if (!card) return;
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#f4f1e8";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "#1c1b17";
+      ctx.lineWidth = 8;
+      ctx.strokeRect(28, 28, canvas.width - 56, canvas.height - 56);
+      ctx.fillStyle = "#a6422b";
+      ctx.fillRect(66, 66, 210, 170);
+      ctx.fillStyle = "#fff9e8";
+      ctx.font = "900 92px Segoe UI, sans-serif";
+      ctx.fillText(String(card.risk), 104, 165);
+      ctx.font = "800 24px Segoe UI, sans-serif";
+      ctx.fillText("REGRESSION RISK", 88, 206);
+      ctx.fillStyle = "#1c1b17";
+      ctx.font = "900 58px Segoe UI, sans-serif";
+      wrapCanvasText(ctx, "Agent Regression Forge", 316, 104, 830, 62, 2);
+      ctx.font = "700 30px Segoe UI, sans-serif";
+      ctx.fillStyle = "#2e5f56";
+      wrapCanvasText(ctx, card.modeList.slice(0, 2).join(" + "), 316, 235, 820, 38, 2);
+      ctx.fillStyle = "#1c1b17";
+      ctx.font = "650 30px Segoe UI, sans-serif";
+      wrapCanvasText(ctx, card.goal || "One failed agent run became a regression pack.", 74, 335, 1050, 40, 3);
+      ctx.font = "700 25px Segoe UI, sans-serif";
+      ctx.fillStyle = "#615f56";
+      wrapCanvasText(ctx, `Stack: ${card.stack || "unspecified"} | $19 launch-sprint pack`, 74, 525, 980, 32, 2);
+      const link = document.createElement("a");
+      link.download = "agent-regression-forge-card.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
     forge();
   </script>
 </body>

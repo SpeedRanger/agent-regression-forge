@@ -58,6 +58,10 @@
   and status JSON at public repo commit
   `217e0e7b860d41c58897ca7e966c5cbe3f9100ba`; GitHub Pages completed
   successfully.
+- 2026-06-09: upgraded the live app conversion surface with launch-sprint slot
+  framing, a stronger request CTA, and a downloadable regression-card generator
+  for social/Product Hunt proof assets. Desktop and mobile Playwright smoke
+  checks passed before publish.
 
 ## Product Hunt
 
