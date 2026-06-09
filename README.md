@@ -48,6 +48,16 @@ The buyer sends one public or redacted agent failure and receives:
 One paid slot clears the `$10` target before fees only when receipt, checkout
 export, paid invoice, or equivalent buyer-confirmed payment evidence exists.
 
+The public request path currently uses a GitHub issue template. After a real
+checkout or private paid-intake URL exists, the deploy script can publish it
+with:
+
+```powershell
+pwsh -NoProfile -File ui/agent-regression-forge/deploy-github-pages.ps1 `
+  -RequestUrl "PASTE_CHECKOUT_OR_PRIVATE_INTAKE_URL" `
+  -ConfirmPublish
+```
+
 ## Run locally
 
 Open `index.html` directly or serve the folder:

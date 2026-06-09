@@ -44,6 +44,10 @@
   `88951d3534cb9f73511d5087e7a4e36cc3110b0f`; GitHub Pages workflow completed
   successfully and live `launch-status.json` showed public repo/site true while
   Product Hunt and revenue gates remained false.
+- 2026-06-09: added `payment-link-setup.md`,
+  `owner-launch-runbook-2026-06-09.md`, and `-RequestUrl` deploy support so a
+  real checkout/private paid-intake URL can replace the temporary GitHub issue
+  request path after account-owner setup.
 
 ## Product Hunt
 
@@ -52,6 +56,9 @@
   action.
 
 ## Revenue
+
+- Current paid intake: temporary public GitHub issue request.
+- Real checkout/private paid intake: missing.
 
 | Slot | Buyer | Amount | Evidence | Status |
 | --- | --- | ---: | --- | --- |
@@ -67,5 +74,6 @@ receipt/export/invoice or equivalent buyer-confirmed payment evidence exists.
 ## Next Actions
 
 1. Submit Product Hunt from an interactive logged-in browser.
-2. Route paid requests through issue #1 or the public request form.
-3. Record only evidence-backed revenue.
+2. Create a real checkout/private paid-intake URL from `payment-link-setup.md`.
+3. Republish with `deploy-github-pages.ps1 -RequestUrl "REAL_HTTPS_URL"`.
+4. Record only evidence-backed revenue.

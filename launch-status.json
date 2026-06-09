@@ -52,7 +52,12 @@
     "product_hunt_rank_proof": false,
     "verified_revenue_over_10_usd": false
   },
+  "local_account_owner_assets": [
+    "payment-link-setup.md",
+    "owner-launch-runbook-2026-06-09.md"
+  ],
   "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
+  "real_checkout_or_private_paid_intake_url_connected": false,
   "public_launch_issue_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1",
   "no_claims_until_proven": [
     "Product Hunt listing",
