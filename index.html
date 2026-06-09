@@ -180,8 +180,10 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         <button id="copy" class="secondary">Copy Markdown</button>
         <button id="testfile" class="secondary">Copy test file</button>
         <button id="request" class="secondary">Copy slot request</button>
+        <button id="demoLink" class="secondary">Copy demo link</button>
+        <button id="openRequest" class="secondary">Open prefilled request</button>
         <button id="card" class="secondary">Download card</button>
-        <p class="action-note">Copy the slot request, then paste it into the public request form. Keep secrets and private repo data out.</p>
+        <p class="action-note">Copy the slot request or open a prefilled request. Keep secrets and private repo data out.</p>
       </div>
 
       <div class="panel" aria-live="polite">
@@ -198,6 +200,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
   </main>
 
   <script>
+    const defaultRequestUrl = "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml";
     const rules = [
       { id: "proofless", label: "Proofless verification claim", test: /tests? look good|verified|fixed|done/i, check: /not run|was not run|no test|did not run/i, guard: "Require command output or screenshot before accepting done." },
       { id: "surface-drift", label: "Adjacent behavior drift", test: /tax|auth|payment|permission|rounding|fallback/i, check: /don't touch|preserve|existing|unchanged/i, guard: "Lock adjacent business rules with regression assertions before editing." },
@@ -295,6 +298,40 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         "4. Re-run the focused test plus one adjacent invariant check.",
         "5. Paste exact command output into the final report."
       ].join("\n");
+    }
+
+    function buildDemoUrl(goal, stack, trace, error) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("goal", goal);
+      url.searchParams.set("stack", stack);
+      url.searchParams.set("trace", trace);
+      url.searchParams.set("error", error);
+      return url.toString();
+    }
+
+    function applyDemoParams() {
+      const params = new URLSearchParams(window.location.search);
+      const mappings = [
+        ["goal", "goal"],
+        ["stack", "stack"],
+        ["trace", "trace"],
+        ["error", "error"]
+      ];
+      let changed = false;
+      for (const [param, id] of mappings) {
+        if (params.has(param)) {
+          document.getElementById(id).value = params.get(param);
+          changed = true;
+        }
+      }
+      return changed;
+    }
+
+    function buildRequestUrl(packet) {
+      const url = new URL(defaultRequestUrl);
+      url.searchParams.set("title", "Regression pack request");
+      url.searchParams.set("body", packet);
+      return url.toString();
     }
 
     function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 6) {
@@ -401,6 +438,8 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       ].join("\n");
       window.currentMarkdown = markdown;
       window.currentRequest = requestPacket;
+      window.currentDemoUrl = buildDemoUrl(goal, stack, trace, error);
+      window.currentRequestUrl = buildRequestUrl(requestPacket);
       window.currentTestFile = testFile;
       window.currentCard = { risk, stack, goal, error, modeList };
       const riskNode = document.getElementById("risk");
@@ -428,6 +467,10 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
     document.getElementById("copy").addEventListener("click", () => navigator.clipboard.writeText(window.currentMarkdown || ""));
     document.getElementById("testfile").addEventListener("click", () => navigator.clipboard.writeText(window.currentTestFile || ""));
     document.getElementById("request").addEventListener("click", () => navigator.clipboard.writeText(window.currentRequest || ""));
+    document.getElementById("demoLink").addEventListener("click", () => navigator.clipboard.writeText(window.currentDemoUrl || window.location.href));
+    document.getElementById("openRequest").addEventListener("click", () => {
+      window.open(window.currentRequestUrl || defaultRequestUrl, "_blank", "noopener,noreferrer");
+    });
     document.getElementById("card").addEventListener("click", () => {
       const card = window.currentCard;
       if (!card) return;
@@ -464,6 +507,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
+    applyDemoParams();
     forge();
   </script>
 </body>

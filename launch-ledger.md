@@ -75,6 +75,9 @@
 - 2026-06-09: added a `Copy test file` action and rendered starter test file
   block. The app now infers Playwright, Vitest/Jest, or Pytest from the stack
   field and generates a paste-ready regression scaffold.
+- 2026-06-09: added `Copy demo link` and `Open prefilled request` actions so a
+  generated failure analysis can be shared by URL and sent to the public request
+  form with title/body already filled.
 
 ## Product Hunt
 
