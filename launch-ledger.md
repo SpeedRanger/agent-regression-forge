@@ -54,6 +54,10 @@
   successfully and live status kept Product Hunt/revenue gates false.
 - 2026-06-09: added public launch-status comment to issue #1:
   https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083
+- 2026-06-09: republished the launch-status comment URL in the public ledger
+  and status JSON at public repo commit
+  `217e0e7b860d41c58897ca7e966c5cbe3f9100ba`; GitHub Pages completed
+  successfully.
 
 ## Product Hunt
 
