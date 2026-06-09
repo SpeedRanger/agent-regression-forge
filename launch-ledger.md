@@ -4,7 +4,7 @@
 > Product: Agent Regression Forge
 > Public site: https://speedranger.github.io/agent-regression-forge/
 > Public repo: https://github.com/SpeedRanger/agent-regression-forge
-> Public release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.1.0
+> Public release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
 > Repo topics: ai-agents, ai-code-review, claude-code, codex, coding-agents, developer-tools, product-hunt, qa, regression-testing, software-testing
 
 ## Current Gates
@@ -19,7 +19,7 @@
 
 - Site: https://speedranger.github.io/agent-regression-forge/
 - Repo: https://github.com/SpeedRanger/agent-regression-forge
-- Release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.1.0
+- Release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
 - Request form: https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml
 - Public launch issue: https://github.com/SpeedRanger/agent-regression-forge/issues/1
 - Public launch status comment: https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083
@@ -62,6 +62,10 @@
   framing, a stronger request CTA, and a downloadable regression-card generator
   for social/Product Hunt proof assets. Desktop and mobile Playwright smoke
   checks passed before publish.
+- 2026-06-09: created public release `v0.2.0` for the conversion-ready launch
+  surface at target commit `d215599bf3121773cf9e416a35d7eec0a3130d86`.
+  Verified release URL:
+  https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
 
 ## Product Hunt
 

@@ -7,6 +7,7 @@ Live target:
 
 - Site: https://speedranger.github.io/agent-regression-forge/
 - Repo: https://github.com/SpeedRanger/agent-regression-forge
+- Release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
 - Public request form: https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml
 
 ## Why this exists
