@@ -22,6 +22,7 @@
 - Release: https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.1.0
 - Request form: https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml
 - Public launch issue: https://github.com/SpeedRanger/agent-regression-forge/issues/1
+- Public launch status comment: https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083
 - Buyer packet: https://speedranger.github.io/agent-regression-forge/launch-day-buyer-packet.md
 - Reserve slot: https://speedranger.github.io/agent-regression-forge/reserve-slot.md
 - Product Hunt handoff: https://speedranger.github.io/agent-regression-forge/product-hunt-submit-handoff-2026-06-08.md
@@ -48,6 +49,11 @@
   `owner-launch-runbook-2026-06-09.md`, and `-RequestUrl` deploy support so a
   real checkout/private paid-intake URL can replace the temporary GitHub issue
   request path after account-owner setup.
+- 2026-06-09: republished public status docs at public repo commit
+  `1189f91364c8a21fac2c466fabb02449b1a7ecb7`; GitHub Pages completed
+  successfully and live status kept Product Hunt/revenue gates false.
+- 2026-06-09: added public launch-status comment to issue #1:
+  https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083
 
 ## Product Hunt
 

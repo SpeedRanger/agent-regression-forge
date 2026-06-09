@@ -59,6 +59,7 @@
   "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
   "real_checkout_or_private_paid_intake_url_connected": false,
   "public_launch_issue_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1",
+  "public_launch_status_comment_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083",
   "no_claims_until_proven": [
     "Product Hunt listing",
     "Product Hunt leaderboard rank",
