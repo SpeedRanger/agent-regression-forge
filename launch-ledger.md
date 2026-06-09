@@ -40,6 +40,10 @@
 - 2026-06-09: `ph-thumbnail.png` returned HTTP 200 as `image/png`.
 - 2026-06-09: created public launch issue #1 and public release `v0.1.0`.
 - 2026-06-09: set repo topics for discoverability.
+- 2026-06-09: republished verified status/ledger update at public repo commit
+  `88951d3534cb9f73511d5087e7a4e36cc3110b0f`; GitHub Pages workflow completed
+  successfully and live `launch-status.json` showed public repo/site true while
+  Product Hunt and revenue gates remained false.
 
 ## Product Hunt
 
@@ -62,7 +66,6 @@ receipt/export/invoice or equivalent buyer-confirmed payment evidence exists.
 
 ## Next Actions
 
-1. Republish this verified status update to GitHub Pages.
-2. Submit Product Hunt from an interactive logged-in browser.
-3. Route paid requests through issue #1 or the public request form.
-4. Record only evidence-backed revenue.
+1. Submit Product Hunt from an interactive logged-in browser.
+2. Route paid requests through issue #1 or the public request form.
+3. Record only evidence-backed revenue.
