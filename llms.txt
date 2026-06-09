@@ -1,0 +1,36 @@
+# Agent Regression Forge
+
+Agent Regression Forge is a static product that turns failed AI coding-agent
+runs into deterministic regression checks, guardrails, proof checklists, and a
+next prompt.
+
+Primary URL: https://speedranger.github.io/agent-regression-forge/
+Repository: https://github.com/SpeedRanger/agent-regression-forge
+
+Inputs should be public or redacted only:
+
+- intended behavior
+- stack or test runner
+- failed agent trace
+- public/redacted error or observed breakage
+
+Outputs:
+
+- risk score
+- failure modes
+- required checks
+- test scaffolds
+- guardrails
+- next prompt
+
+Paid wedge:
+
+- `$19` public/redacted failure-to-regression-pack service
+- revenue is counted only with receipt, checkout export, paid invoice, or
+  equivalent buyer-confirmed payment evidence
+
+Hard limits:
+
+- no Product Hunt listing, rank, revenue, or paid-customer claims without proof
+- no private repos, private logs, secrets, customer data, or payment details in
+  public issues

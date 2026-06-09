@@ -1,0 +1,58 @@
+{
+  "product": "Agent Regression Forge",
+  "status_date": "2026-06-08",
+  "public_url": "https://speedranger.github.io/agent-regression-forge/",
+  "repo_url": "https://github.com/SpeedRanger/agent-regression-forge",
+  "positioning": "Turns failed AI coding-agent runs into deterministic regression packs.",
+  "offer": {
+    "name": "public/redacted failure-to-regression-pack service",
+    "price_usd": 19,
+    "revenue_goal_usd": 10,
+    "unit_goal": 1,
+    "proof_required": "receipt, checkout export, paid invoice, or buyer-confirmed payment evidence"
+  },
+  "public_assets": [
+    "index.html",
+    "README.md",
+    "llms.txt",
+    "AGENTS.md",
+    "SECURITY.md",
+    "sample-regression-pack.md",
+    "reserve-slot.md",
+    "launch-day-buyer-packet.md",
+    "product-hunt-launch-assets.md",
+    "product-hunt-submit-handoff-2026-06-08.md",
+    "launch-status.json",
+    "launch-ledger.md",
+    "robots.txt",
+    "sitemap.xml",
+    ".github/ISSUE_TEMPLATE/regression_pack_request.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    "ph-thumbnail.png",
+    "ph-gallery-1-app.png",
+    "ph-gallery-2-pack.png"
+  ],
+  "completion_gates": {
+    "public_repo_created": false,
+    "public_site_current": false,
+    "product_hunt_listing_url": false,
+    "product_hunt_rank_proof": false,
+    "verified_revenue_over_10_usd": false
+  },
+  "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
+  "no_claims_until_proven": [
+    "Product Hunt listing",
+    "Product Hunt leaderboard rank",
+    "paid customer",
+    "first-24h revenue",
+    "agent reliability improvement"
+  ],
+  "privacy_boundary": [
+    "No private logs",
+    "No private repos",
+    "No secrets",
+    "No tokens",
+    "No customer data",
+    "No payment details in public issues"
+  ]
+}

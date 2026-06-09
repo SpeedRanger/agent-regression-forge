@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Regression Forge</title>
+  <meta name="description" content="Turn failed AI coding-agent runs into deterministic regression checks, guardrails, and a next prompt.">
+  <link rel="canonical" href="https://speedranger.github.io/agent-regression-forge/">
+  <meta name="theme-color" content="#f4f1e8">
+  <meta property="og:title" content="Agent Regression Forge">
+  <meta property="og:description" content="Turn AI agent failures into regression tests.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://speedranger.github.io/agent-regression-forge/">
+  <meta property="og:image" content="https://speedranger.github.io/agent-regression-forge/ph-thumbnail.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent Regression Forge">
+  <meta name="twitter:description" content="Turn AI agent failures into regression tests.">
+  <meta name="twitter:image" content="https://speedranger.github.io/agent-regression-forge/ph-thumbnail.png">
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --ink: #1c1b17;
+      --muted: #615f56;
+      --panel: #fffcf1;
+      --rail: #2e5f56;
+      --hot: #a6422b;
+      --line: #c9c0aa;
+      --code: #171b18;
+      --code-ink: #dbe9d4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(28,27,23,.045) 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--paper);
+      color: var(--ink);
+      font-family: "Aptos", "Segoe UI", system-ui, sans-serif;
+      line-height: 1.45;
+    }
+    main { width: min(1320px, calc(100vw - 28px)); margin: 0 auto; padding: 22px 0 34px; }
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: end;
+      border-bottom: 3px solid var(--ink);
+      padding-bottom: 18px;
+      margin-bottom: 16px;
+    }
+    h1 { margin: 0; font-size: clamp(34px, 5.5vw, 78px); line-height: .94; letter-spacing: 0; max-width: 880px; }
+    .sub { margin: 12px 0 0; color: var(--muted); font-size: 17px; max-width: 780px; }
+    .offer { border: 2px solid var(--ink); background: #e4dcc7; padding: 14px; font-size: 14px; }
+    .offer strong { display: block; font-size: 18px; margin-bottom: 4px; }
+    .links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .links a { color: var(--ink); font-weight: 850; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+    .workspace { display: grid; grid-template-columns: minmax(420px, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: start; }
+    .panel { background: var(--panel); border: 1px solid var(--line); padding: 16px; box-shadow: 5px 5px 0 rgba(28,27,23,.12); }
+    label { display: block; margin: 11px 0 6px; font-weight: 850; }
+    textarea, input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fffef8;
+      color: var(--ink);
+      padding: 11px 12px;
+      font: inherit;
+    }
+    textarea { min-height: 170px; resize: vertical; }
+    .short { min-height: 84px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button {
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: #fff9e8;
+      font-weight: 850;
+      padding: 10px 13px;
+      min-height: 44px;
+      cursor: pointer;
+      margin: 12px 8px 0 0;
+    }
+    button.secondary { background: transparent; color: var(--ink); }
+    button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid #dfb34d; outline-offset: 2px; }
+    .scoreline { display: grid; grid-template-columns: 128px 1fr; gap: 14px; align-items: stretch; margin-bottom: 12px; }
+    .score {
+      background: var(--hot);
+      color: #fff9e8;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      min-height: 118px;
+      font-size: 46px;
+      font-weight: 950;
+    }
+    .score.low { background: var(--rail); }
+    .verdict { border: 2px solid var(--ink); padding: 14px; background: #efe6cf; }
+    h2 { margin: 0 0 6px; font-size: 24px; }
+    h3 { margin: 0 0 9px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--rail); }
+    .block { border-top: 1px solid var(--line); padding: 13px 0; }
+    ul { margin: 0; padding-left: 18px; }
+    li + li { margin-top: 6px; }
+    pre { margin: 0; white-space: pre-wrap; background: var(--code); color: var(--code-ink); padding: 12px; overflow: auto; }
+    .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 940px) {
+      header, .workspace, .row, .scoreline, .output-grid { grid-template-columns: 1fr; }
+      textarea { min-height: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Turn an agent failure into tests you can rerun.</h1>
+        <p class="sub">Paste the failed run. Get failure modes, deterministic checks, regression-test scaffolds, guardrail rules, and a next prompt that makes verification non-optional.</p>
+      </div>
+      <aside class="offer">
+        <strong>$19 service wedge</strong>
+        One public/redacted failure to a regression pack. No private repos, secrets, customer data, or payment details in the public input.
+        <div class="links">
+          <a href="launch-day-buyer-packet.md">Buyer packet</a>
+          <a href="reserve-slot.md">Reserve slot</a>
+          <a href="https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml">Request pack</a>
+        </div>
+      </aside>
+    </header>
+
+    <section class="workspace">
+      <div class="panel">
+        <div class="row">
+          <div>
+            <label for="goal">Intended behavior</label>
+            <input id="goal" value="Checkout discount should apply once and preserve the existing tax calculation.">
+          </div>
+          <div>
+            <label for="stack">Stack / test runner</label>
+            <input id="stack" value="TypeScript, Playwright, Vitest">
+          </div>
+        </div>
+        <label for="trace">Agent run / failure trace</label>
+        <textarea id="trace">User: fix the discount bug but don't touch tax.
+Agent: edited checkout totals and tax helper.
+Agent: tests look good.
+Terminal: npm test was not run.
+Diff: removed tax rounding guard, changed discount order, added fallback when coupon is blank.
+User: tax is now wrong for CA orders and the agent said it was verified.</textarea>
+        <label for="error" >Error, test output, or observed breakage</label>
+        <textarea class="short" id="error">CA order with 10% coupon applies discount after tax. Expected discount before tax, existing tax rounding unchanged.</textarea>
+        <button id="forge">Forge regression pack</button>
+        <button id="sample" class="secondary">Load sample</button>
+        <button id="copy" class="secondary">Copy Markdown</button>
+      </div>
+
+      <div class="panel" aria-live="polite">
+        <div class="scoreline">
+          <div class="score" id="risk">82</div>
+          <div class="verdict">
+            <h2 id="headline">High regression risk</h2>
+            <p class="sub" id="brief">The run claims verification without proof and touched adjacent business logic.</p>
+          </div>
+        </div>
+        <div id="report"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const rules = [
+      { id: "proofless", label: "Proofless verification claim", test: /tests? look good|verified|fixed|done/i, check: /not run|was not run|no test|did not run/i, guard: "Require command output or screenshot before accepting done." },
+      { id: "surface-drift", label: "Adjacent behavior drift", test: /tax|auth|payment|permission|rounding|fallback/i, check: /don't touch|preserve|existing|unchanged/i, guard: "Lock adjacent business rules with regression assertions before editing." },
+      { id: "fallback", label: "Success-shaped fallback", test: /fallback|default|blank|catch|silent/i, check: /wrong|break|missing|null/i, guard: "Ban silent fallbacks unless the expected recovery behavior is specified." },
+      { id: "broad-edit", label: "Broad edit footprint", test: /edited|changed|removed|refactor|helper/i, check: /bug|fix|targeted/i, guard: "List touched files and explain why each file is necessary." },
+      { id: "no-run", label: "Missing deterministic run", test: /not run|was not run|skipped|no test/i, check: /test|playwright|vitest|pytest|npm/i, guard: "Run the smallest failing regression check before summary." }
+    ];
+
+    function lines(items) {
+      return items.map(item => `<li>${item}</li>`).join("");
+    }
+
+    function forge() {
+      const goal = document.getElementById("goal").value.trim();
+      const stack = document.getElementById("stack").value.trim();
+      const trace = document.getElementById("trace").value.trim();
+      const error = document.getElementById("error").value.trim();
+      const haystack = `${goal}\n${stack}\n${trace}\n${error}`;
+      const hits = rules.filter(rule => rule.test.test(haystack) || rule.check.test(haystack));
+      const risk = Math.min(96, 34 + hits.length * 12 + (/(payment|tax|auth|customer|checkout)/i.test(haystack) ? 14 : 0));
+      const checks = [
+        `Write one failing regression for: ${goal || "the intended behavior"}`,
+        `Assert the observed breakage: ${error || "the user-visible failure"}`,
+        "Run the focused test before and after the fix.",
+        "Run one adjacent smoke check for untouched business logic.",
+        "Paste exact command output into the final report."
+      ];
+      const scaffolds = [
+        `test("preserves intended behavior", async () => { /* arrange public fixture; assert ${goal || "expected output"} */ });`,
+        `test("does not reintroduce observed failure", async () => { /* assert ${error || "failure is blocked"} */ });`,
+        "test(\"does not alter adjacent protected rule\", async () => { /* tax/auth/payment invariant */ });"
+      ];
+      const guardrails = [...new Set(hits.map(hit => hit.guard))];
+      const prompt = `You are fixing one regression only.\nGoal: ${goal}\nObserved failure: ${error}\nFirst write a failing deterministic test. Do not change adjacent business logic unless the test proves it is required. Run the focused test and paste exact output. If you cannot verify, stop and say uncertain.`;
+      const modeList = hits.length ? hits.map(hit => hit.label) : ["Unclassified failure - start with focused regression evidence"];
+      const markdown = [
+        "# Agent Regression Forge Pack",
+        "",
+        `Risk score: ${risk}/100`,
+        `Stack: ${stack || "unspecified"}`,
+        "",
+        "## Failure modes",
+        ...modeList.map(item => `- ${item}`),
+        "",
+        "## Required checks",
+        ...checks.map(item => `- ${item}`),
+        "",
+        "## Test scaffolds",
+        ...scaffolds.map(item => `- \`${item}\``),
+        "",
+        "## Guardrails",
+        ...(guardrails.length ? guardrails : ["Require real verification evidence."]).map(item => `- ${item}`),
+        "",
+        "## Next prompt",
+        "```text",
+        prompt,
+        "```"
+      ].join("\n");
+      window.currentMarkdown = markdown;
+      const riskNode = document.getElementById("risk");
+      riskNode.textContent = risk;
+      riskNode.className = `score ${risk < 62 ? "low" : ""}`;
+      document.getElementById("headline").textContent = risk >= 70 ? "High regression risk" : "Moderate regression risk";
+      document.getElementById("brief").textContent = modeList.slice(0, 2).join(" + ");
+      document.getElementById("report").innerHTML = `
+        <div class="output-grid">
+          <div class="block"><h3>Failure modes</h3><ul>${lines(modeList)}</ul></div>
+          <div class="block"><h3>Required checks</h3><ul>${lines(checks)}</ul></div>
+        </div>
+        <div class="block"><h3>Test scaffolds</h3><ul>${lines(scaffolds.map(item => `<code>${item.replace(/</g, "&lt;")}</code>`))}</ul></div>
+        <div class="block"><h3>Guardrails</h3><ul>${lines(guardrails.length ? guardrails : ["Require real verification evidence."])}</ul></div>
+        <div class="block"><h3>Next prompt</h3><pre>${prompt.replace(/</g, "&lt;")}</pre></div>`;
+    }
+
+    document.getElementById("forge").addEventListener("click", forge);
+    document.getElementById("sample").addEventListener("click", () => {
+      document.getElementById("goal").value = "Checkout discount should apply once and preserve the existing tax calculation.";
+      document.getElementById("stack").value = "TypeScript, Playwright, Vitest";
+      forge();
+    });
+    document.getElementById("copy").addEventListener("click", () => navigator.clipboard.writeText(window.currentMarkdown || ""));
+    forge();
+  </script>
+</body>
+</html>

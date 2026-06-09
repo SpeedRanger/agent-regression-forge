@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://SpeedRanger.github.io/agent-regression-forge/sitemap.xml

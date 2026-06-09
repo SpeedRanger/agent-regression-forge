@@ -1,0 +1,84 @@
+name: Regression-pack request
+description: Request a public-safe $19 Agent Regression Forge packet.
+title: "Regression pack: <repo/product/task>"
+labels:
+  - regression-pack
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Public or redacted inputs only. Do not include secrets, tokens, private
+        repositories, private logs, private analytics, customer data, payment
+        details, or anything under NDA in this public issue.
+  - type: input
+    id: public_context
+    attributes:
+      label: Public context URL
+      description: Public repo, issue, docs page, product URL, or public thread if available.
+      placeholder: https://github.com/example/repo/issues/123
+    validations:
+      required: false
+  - type: textarea
+    id: intended_behavior
+    attributes:
+      label: Intended behavior
+      description: What was the agent supposed to preserve or fix?
+      placeholder: Fix checkout discount application without touching tax rounding.
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack or test runner
+      placeholder: TypeScript, Playwright, Vitest
+    validations:
+      required: false
+  - type: textarea
+    id: redacted_failure
+    attributes:
+      label: Redacted agent failure
+      description: Paste only public/redacted commands, errors, transcript lines, or changed-file summaries.
+      placeholder: Agent claimed done, changed tax helper, skipped tests, and checkout total regressed.
+    validations:
+      required: true
+  - type: textarea
+    id: generated_packet
+    attributes:
+      label: Generated regression pack
+      description: Paste the exported Agent Regression Forge packet if available.
+    validations:
+      required: false
+  - type: dropdown
+    id: payment_handoff
+    attributes:
+      label: Payment handoff preference
+      description: Do not include payment details here. This only tells us which private handoff you prefer after scope-fit confirmation.
+      options:
+        - Invoice after scope-fit confirmation
+        - Checkout link after scope-fit confirmation
+        - Buyer-approved private channel after scope-fit confirmation
+        - Not reserving a paid slot yet
+    validations:
+      required: true
+  - type: dropdown
+    id: delivery_window
+    attributes:
+      label: Desired delivery window
+      description: Launch-sprint slots target delivery within 24 hours after payment evidence and scope-fit confirmation.
+      options:
+        - Launch sprint: within 24 hours after payment evidence
+        - Standard: within 2-3 days
+        - Exploratory: feedback only, no paid delivery yet
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Public-safety confirmation
+      options:
+        - label: I understand this is a `$19` public/redacted regression-pack slot only if scope-fit is confirmed and payment evidence exists.
+          required: true
+        - label: This request contains only public or redacted information.
+          required: true
+        - label: This request contains no secrets, tokens, private repos, private logs, customer data, private analytics, or payment details.
+          required: true
