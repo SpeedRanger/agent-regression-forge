@@ -23,6 +23,7 @@
 - Request form: https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml
 - Public launch issue: https://github.com/SpeedRanger/agent-regression-forge/issues/1
 - Public launch status comment: https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083
+- Public release update comment: https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4657981799
 - Buyer packet: https://speedranger.github.io/agent-regression-forge/launch-day-buyer-packet.md
 - Reserve slot: https://speedranger.github.io/agent-regression-forge/reserve-slot.md
 - Product Hunt handoff: https://speedranger.github.io/agent-regression-forge/product-hunt-submit-handoff-2026-06-08.md
@@ -66,6 +67,8 @@
   surface at target commit `d215599bf3121773cf9e416a35d7eec0a3130d86`.
   Verified release URL:
   https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
+- 2026-06-09: added public issue #1 release update comment:
+  https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4657981799
 
 ## Product Hunt
 
