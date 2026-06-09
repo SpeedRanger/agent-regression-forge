@@ -73,6 +73,7 @@
     .metric { border: 1px solid var(--line); background: #fff8df; padding: 10px; }
     .metric b { display: block; font-size: 22px; line-height: 1; }
     .metric span { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .action-note { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
     .workspace { display: grid; grid-template-columns: minmax(420px, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: start; }
     .panel { background: var(--panel); border: 1px solid var(--line); padding: 16px; box-shadow: 5px 5px 0 rgba(28,27,23,.12); }
     label { display: block; margin: 11px 0 6px; font-weight: 850; }
@@ -177,7 +178,9 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         <button id="forge">Forge regression pack</button>
         <button id="sample" class="secondary">Load sample</button>
         <button id="copy" class="secondary">Copy Markdown</button>
+        <button id="request" class="secondary">Copy slot request</button>
         <button id="card" class="secondary">Download card</button>
+        <p class="action-note">Copy the slot request, then paste it into the public request form. Keep secrets and private repo data out.</p>
       </div>
 
       <div class="panel" aria-live="polite">
@@ -275,7 +278,32 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         prompt,
         "```"
       ].join("\n");
+      const requestPacket = [
+        "Agent Regression Pack Request",
+        "",
+        "Intended behavior:",
+        goal || "unspecified",
+        "",
+        "Stack or test runner:",
+        stack || "unspecified",
+        "",
+        "Public/redacted agent trace:",
+        trace || "unspecified",
+        "",
+        "Observed breakage:",
+        error || "unspecified",
+        "",
+        "No-secrets confirmation:",
+        "I confirm this request contains only public or redacted context. It does not include secrets, API keys, private repo contents, private logs, customer data, payment details, credentials, or NDA material.",
+        "",
+        "Generated risk summary:",
+        `${risk}/100 - ${modeList.slice(0, 2).join(" + ")}`,
+        "",
+        "Requested deliverable:",
+        "$19 launch-sprint regression pack: failure modes, deterministic checks, test scaffolds, guardrails, proof checklist, and next prompt."
+      ].join("\n");
       window.currentMarkdown = markdown;
+      window.currentRequest = requestPacket;
       window.currentCard = { risk, stack, goal, error, modeList };
       const riskNode = document.getElementById("risk");
       riskNode.textContent = risk;
@@ -299,6 +327,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       forge();
     });
     document.getElementById("copy").addEventListener("click", () => navigator.clipboard.writeText(window.currentMarkdown || ""));
+    document.getElementById("request").addEventListener("click", () => navigator.clipboard.writeText(window.currentRequest || ""));
     document.getElementById("card").addEventListener("click", () => {
       const card = window.currentCard;
       if (!card) return;

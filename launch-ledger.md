@@ -69,6 +69,9 @@
   https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0
 - 2026-06-09: added public issue #1 release update comment:
   https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4657981799
+- 2026-06-09: added a `Copy slot request` action to the app so buyers can
+  paste one public-safe request packet into the public issue form or future
+  checkout intake.
 
 ## Product Hunt
 
