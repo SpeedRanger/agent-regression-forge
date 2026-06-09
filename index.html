@@ -118,7 +118,7 @@
     .block { border-top: 1px solid var(--line); padding: 13px 0; }
     ul { margin: 0; padding-left: 18px; }
     li + li { margin-top: 6px; }
-    pre { margin: 0; white-space: pre-wrap; background: var(--code); color: var(--code-ink); padding: 12px; overflow: auto; }
+    pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code); color: var(--code-ink); padding: 12px; overflow: auto; }
     .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 940px) {
       header, .workspace, .row, .scoreline, .output-grid, .meta-strip { grid-template-columns: 1fr; }
@@ -178,6 +178,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         <button id="forge">Forge regression pack</button>
         <button id="sample" class="secondary">Load sample</button>
         <button id="copy" class="secondary">Copy Markdown</button>
+        <button id="testfile" class="secondary">Copy test file</button>
         <button id="request" class="secondary">Copy slot request</button>
         <button id="card" class="secondary">Download card</button>
         <p class="action-note">Copy the slot request, then paste it into the public request form. Keep secrets and private repo data out.</p>
@@ -207,6 +208,93 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
 
     function lines(items) {
       return items.map(item => `<li>${item}</li>`).join("");
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function inferRunner(stack) {
+      const lower = stack.toLowerCase();
+      if (lower.includes("playwright")) return "playwright";
+      if (lower.includes("pytest") || lower.includes("python")) return "pytest";
+      if (lower.includes("jest")) return "jest";
+      if (lower.includes("vitest") || lower.includes("typescript") || lower.includes("javascript")) return "vitest";
+      return "generic";
+    }
+
+    function generateTestFile(goal, error, stack) {
+      const runner = inferRunner(stack);
+      const safeGoal = goal || "the intended behavior";
+      const safeError = error || "the observed breakage";
+      const jsGoal = JSON.stringify(safeGoal);
+      const jsError = JSON.stringify(safeError);
+      if (runner === "playwright") {
+        return [
+          "import { test, expect } from '@playwright/test';",
+          "",
+          "test.describe('agent regression pack', () => {",
+          "  test('preserves intended behavior', async ({ page }) => {",
+          "    // TODO: navigate to the smallest public fixture that reproduces the failure.",
+          "    // await page.goto('/checkout');",
+          `    const intendedBehavior = ${jsGoal};`,
+          "    expect(intendedBehavior).toBeTruthy();",
+          "  });",
+          "",
+          "  test('blocks the observed breakage', async ({ page }) => {",
+          `    const observedBreakage = ${jsError};`,
+          "    // TODO: replace this placeholder with the exact assertion that failed.",
+          "    expect(observedBreakage).not.toContain('TODO_UNVERIFIED');",
+          "  });",
+          "});"
+        ].join("\n");
+      }
+      if (runner === "pytest") {
+        return [
+          "def test_preserves_intended_behavior():",
+          `    intended_behavior = ${jsGoal}`,
+          "    # TODO: arrange the smallest public fixture that proves this behavior.",
+          "    assert intended_behavior",
+          "",
+          "",
+          "def test_blocks_observed_breakage():",
+          `    observed_breakage = ${jsError}`,
+          "    # TODO: replace this placeholder with the exact assertion that failed.",
+          "    assert 'TODO_UNVERIFIED' not in observed_breakage"
+        ].join("\n");
+      }
+      if (runner === "jest" || runner === "vitest") {
+        const importLine = runner === "vitest" ? "import { describe, expect, test } from 'vitest';" : "";
+        return [
+          importLine,
+          "describe('agent regression pack', () => {",
+          "  test('preserves intended behavior', () => {",
+          `    const intendedBehavior = ${jsGoal};`,
+          "    // TODO: arrange the smallest fixture that proves this behavior.",
+          "    expect(intendedBehavior).toBeTruthy();",
+          "  });",
+          "",
+          "  test('blocks the observed breakage', () => {",
+          `    const observedBreakage = ${jsError};`,
+          "    // TODO: replace this placeholder with the exact assertion that failed.",
+          "    expect(observedBreakage).not.toContain('TODO_UNVERIFIED');",
+          "  });",
+          "});"
+        ].filter(Boolean).join("\n");
+      }
+      return [
+        "# Agent Regression Test Scaffold",
+        "",
+        `Intended behavior: ${safeGoal}`,
+        `Observed breakage: ${safeError}`,
+        "",
+        "Required checks:",
+        "1. Write one failing test that reproduces the observed breakage.",
+        "2. Run the focused test and capture exact output.",
+        "3. Apply the smallest fix.",
+        "4. Re-run the focused test plus one adjacent invariant check.",
+        "5. Paste exact command output into the final report."
+      ].join("\n");
     }
 
     function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 6) {
@@ -253,6 +341,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         "test(\"does not alter adjacent protected rule\", async () => { /* tax/auth/payment invariant */ });"
       ];
       const guardrails = [...new Set(hits.map(hit => hit.guard))];
+      const testFile = generateTestFile(goal, error, stack);
       const prompt = `You are fixing one regression only.\nGoal: ${goal}\nObserved failure: ${error}\nFirst write a failing deterministic test. Do not change adjacent business logic unless the test proves it is required. Run the focused test and paste exact output. If you cannot verify, stop and say uncertain.`;
       const modeList = hits.length ? hits.map(hit => hit.label) : ["Unclassified failure - start with focused regression evidence"];
       const markdown = [
@@ -269,6 +358,11 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         "",
         "## Test scaffolds",
         ...scaffolds.map(item => `- \`${item}\``),
+        "",
+        "## Starter test file",
+        "```",
+        testFile,
+        "```",
         "",
         "## Guardrails",
         ...(guardrails.length ? guardrails : ["Require real verification evidence."]).map(item => `- ${item}`),
@@ -299,11 +393,15 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
         "Generated risk summary:",
         `${risk}/100 - ${modeList.slice(0, 2).join(" + ")}`,
         "",
+        "Starter test file:",
+        testFile,
+        "",
         "Requested deliverable:",
         "$19 launch-sprint regression pack: failure modes, deterministic checks, test scaffolds, guardrails, proof checklist, and next prompt."
       ].join("\n");
       window.currentMarkdown = markdown;
       window.currentRequest = requestPacket;
+      window.currentTestFile = testFile;
       window.currentCard = { risk, stack, goal, error, modeList };
       const riskNode = document.getElementById("risk");
       riskNode.textContent = risk;
@@ -315,9 +413,10 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
           <div class="block"><h3>Failure modes</h3><ul>${lines(modeList)}</ul></div>
           <div class="block"><h3>Required checks</h3><ul>${lines(checks)}</ul></div>
         </div>
-        <div class="block"><h3>Test scaffolds</h3><ul>${lines(scaffolds.map(item => `<code>${item.replace(/</g, "&lt;")}</code>`))}</ul></div>
+        <div class="block"><h3>Test scaffolds</h3><ul>${lines(scaffolds.map(item => `<code>${escapeHtml(item)}</code>`))}</ul></div>
+        <div class="block"><h3>Starter test file</h3><pre>${escapeHtml(testFile)}</pre></div>
         <div class="block"><h3>Guardrails</h3><ul>${lines(guardrails.length ? guardrails : ["Require real verification evidence."])}</ul></div>
-        <div class="block"><h3>Next prompt</h3><pre>${prompt.replace(/</g, "&lt;")}</pre></div>`;
+        <div class="block"><h3>Next prompt</h3><pre>${escapeHtml(prompt)}</pre></div>`;
     }
 
     document.getElementById("forge").addEventListener("click", forge);
@@ -327,6 +426,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       forge();
     });
     document.getElementById("copy").addEventListener("click", () => navigator.clipboard.writeText(window.currentMarkdown || ""));
+    document.getElementById("testfile").addEventListener("click", () => navigator.clipboard.writeText(window.currentTestFile || ""));
     document.getElementById("request").addEventListener("click", () => navigator.clipboard.writeText(window.currentRequest || ""));
     document.getElementById("card").addEventListener("click", () => {
       const card = window.currentCard;

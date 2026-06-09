@@ -72,6 +72,9 @@
 - 2026-06-09: added a `Copy slot request` action to the app so buyers can
   paste one public-safe request packet into the public issue form or future
   checkout intake.
+- 2026-06-09: added a `Copy test file` action and rendered starter test file
+  block. The app now infers Playwright, Vitest/Jest, or Pytest from the stack
+  field and generates a paste-ready regression scaffold.
 
 ## Product Hunt
 
