@@ -92,6 +92,9 @@
 - 2026-06-11: added `payment-account-setup-2026-06-11.md` with Dodo-first and
   Paddle-fallback account setup fields, product copy, checkout fields, and
   proof-capture steps.
+- 2026-06-11: added `scripts/connect-agent-regression-payment-url.ps1` so a
+  real Dodo/Paddle/private paid-intake URL can update status JSON, ledger, and
+  public site together without marking revenue true.
 
 ## Product Hunt
 
