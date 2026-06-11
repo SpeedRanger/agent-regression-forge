@@ -86,6 +86,9 @@
 - 2026-06-11: updated payment setup to Dodo-first and Paddle-fallback.
   Stripe is not part of this sprint path. Current payment link status remains
   missing until a real Dodo/Paddle/private paid-intake URL exists.
+- 2026-06-11: added a live public sprint countdown and Dodo/Paddle payment
+  status banner to the app so the 24-hour revenue window is visible outside
+  Codex.
 
 ## Product Hunt
 

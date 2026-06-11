@@ -73,6 +73,27 @@
     .metric { border: 1px solid var(--line); background: #fff8df; padding: 10px; }
     .metric b { display: block; font-size: 22px; line-height: 1; }
     .metric span { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .sprint {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 12px;
+      align-items: center;
+      border: 2px solid var(--hot);
+      background: #fff1d4;
+      padding: 12px;
+      margin: 0 0 16px;
+    }
+    .sprint strong { display: block; font-size: 18px; }
+    .sprint p { margin: 4px 0 0; color: var(--muted); }
+    .countdown {
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: #fff9e8;
+      padding: 10px;
+      text-align: center;
+      font-weight: 950;
+      font-size: 24px;
+    }
     .action-note { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
     .workspace { display: grid; grid-template-columns: minmax(420px, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: start; }
     .panel { background: var(--panel); border: 1px solid var(--line); padding: 16px; box-shadow: 5px 5px 0 rgba(28,27,23,.12); }
@@ -121,7 +142,7 @@
     pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code); color: var(--code-ink); padding: 12px; overflow: auto; }
     .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 940px) {
-      header, .workspace, .row, .scoreline, .output-grid, .meta-strip { grid-template-columns: 1fr; }
+      header, .workspace, .row, .scoreline, .output-grid, .meta-strip, .sprint { grid-template-columns: 1fr; }
       textarea { min-height: 150px; }
     }
   </style>
@@ -152,6 +173,14 @@
       <div class="metric"><b>5</b><span>launch-sprint packs</span></div>
       <div class="metric"><b>$19</b><span>public/redacted failure review</span></div>
       <div class="metric"><b>24h</b><span>target delivery after proof</span></div>
+    </section>
+
+    <section class="sprint" aria-label="Revenue sprint status">
+      <div>
+        <strong>24h revenue sprint is live</strong>
+        <p>Dodo first, Paddle fallback. Stripe is not part of this India sprint. Checkout link is pending; public request intake is open now.</p>
+      </div>
+      <div class="countdown" id="countdown">24:00:00</div>
     </section>
 
     <section class="workspace">
@@ -201,6 +230,7 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
 
   <script>
     const defaultRequestUrl = "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml";
+    const sprintDeadline = new Date("2026-06-12T10:58:42+05:30");
     const rules = [
       { id: "proofless", label: "Proofless verification claim", test: /tests? look good|verified|fixed|done/i, check: /not run|was not run|no test|did not run/i, guard: "Require command output or screenshot before accepting done." },
       { id: "surface-drift", label: "Adjacent behavior drift", test: /tax|auth|payment|permission|rounding|fallback/i, check: /don't touch|preserve|existing|unchanged/i, guard: "Lock adjacent business rules with regression assertions before editing." },
@@ -507,8 +537,23 @@ User: tax is now wrong for CA orders and the agent said it was verified.</textar
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
+    function updateCountdown() {
+      const node = document.getElementById("countdown");
+      const remaining = sprintDeadline.getTime() - Date.now();
+      if (remaining <= 0) {
+        node.textContent = "expired";
+        return;
+      }
+      const totalSeconds = Math.floor(remaining / 1000);
+      const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+      const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+      const seconds = String(totalSeconds % 60).padStart(2, "0");
+      node.textContent = `${hours}:${minutes}:${seconds}`;
+    }
     applyDemoParams();
     forge();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
