@@ -54,7 +54,8 @@
   },
   "local_account_owner_assets": [
     "payment-link-setup.md",
-    "owner-launch-runbook-2026-06-09.md"
+    "owner-launch-runbook-2026-06-09.md",
+    "payment-account-setup-2026-06-11.md"
   ],
   "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
   "real_checkout_or_private_paid_intake_url_connected": false,

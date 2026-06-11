@@ -89,6 +89,9 @@
 - 2026-06-11: added a live public sprint countdown and Dodo/Paddle payment
   status banner to the app so the 24-hour revenue window is visible outside
   Codex.
+- 2026-06-11: added `payment-account-setup-2026-06-11.md` with Dodo-first and
+  Paddle-fallback account setup fields, product copy, checkout fields, and
+  proof-capture steps.
 
 ## Product Hunt
 
