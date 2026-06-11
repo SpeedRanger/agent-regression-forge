@@ -1,6 +1,6 @@
 {
   "product": "Agent Regression Forge",
-  "status_date": "2026-06-09",
+  "status_date": "2026-06-11",
   "public_url": "https://speedranger.github.io/agent-regression-forge/",
   "repo_url": "https://github.com/SpeedRanger/agent-regression-forge",
   "release_url": "https://github.com/SpeedRanger/agent-regression-forge/releases/tag/v0.2.0",
@@ -58,6 +58,18 @@
   ],
   "public_request_form_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/new?template=regression_pack_request.yml",
   "real_checkout_or_private_paid_intake_url_connected": false,
+  "payment_sprint": {
+    "started_at_local": "2026-06-11T10:58:42+05:30",
+    "deadline_local": "2026-06-12T10:58:42+05:30",
+    "timer_file": "tmp/agent-regression-forge-revenue-sprint.json",
+    "stripe_allowed": false,
+    "recommended_providers": [
+      "Dodo Payments",
+      "Paddle"
+    ],
+    "provider_account_setup": false,
+    "payment_link_connected": false
+  },
   "public_launch_issue_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1",
   "public_launch_status_comment_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4655900083",
   "public_release_update_comment_url": "https://github.com/SpeedRanger/agent-regression-forge/issues/1#issuecomment-4657981799",

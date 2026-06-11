@@ -14,6 +14,8 @@
 - Product Hunt listing: missing.
 - Product Hunt leaderboard proof: missing.
 - Verified revenue over `$10`: missing.
+- 24-hour revenue sprint timer: running, started `2026-06-11T10:58:42+05:30`,
+  deadline `2026-06-12T10:58:42+05:30`.
 
 ## Published Assets
 
@@ -78,6 +80,12 @@
 - 2026-06-09: added `Copy demo link` and `Open prefilled request` actions so a
   generated failure analysis can be shared by URL and sent to the public request
   form with title/body already filled.
+- 2026-06-11: started an OS-level 24-hour revenue sprint timer via
+  `scripts/start-agent-regression-sprint-timer.ps1`. Timer file:
+  `tmp/agent-regression-forge-revenue-sprint.json`.
+- 2026-06-11: updated payment setup to Dodo-first and Paddle-fallback.
+  Stripe is not part of this sprint path. Current payment link status remains
+  missing until a real Dodo/Paddle/private paid-intake URL exists.
 
 ## Product Hunt
 
@@ -88,7 +96,7 @@
 ## Revenue
 
 - Current paid intake: temporary public GitHub issue request.
-- Real checkout/private paid intake: missing.
+- Real Dodo/Paddle checkout or private paid intake: missing.
 
 | Slot | Buyer | Amount | Evidence | Status |
 | --- | --- | ---: | --- | --- |
@@ -104,6 +112,7 @@ receipt/export/invoice or equivalent buyer-confirmed payment evidence exists.
 ## Next Actions
 
 1. Submit Product Hunt from an interactive logged-in browser.
-2. Create a real checkout/private paid-intake URL from `payment-link-setup.md`.
+2. Create a real Dodo or Paddle checkout/private paid-intake URL from
+   `payment-link-setup.md`.
 3. Republish with `deploy-github-pages.ps1 -RequestUrl "REAL_HTTPS_URL"`.
 4. Record only evidence-backed revenue.
